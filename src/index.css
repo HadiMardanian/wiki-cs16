@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- Global vibe --------------------------------------------------------- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: #00ff00;
+  font-family: "Press Start 2P", "Courier New", Courier, monospace;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+::selection {
+  background: rgba(0, 255, 0, 0.25);
+}
+
+/* --- CRT scanlines overlay ---------------------------------------------- */
+.crt-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.08) 1px,
+    rgba(0, 0, 0, 0) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+}
+
+/* --- Cursor armory (placeholder logic; swap URLs later) ------------------ */
+body.cursor-knife {
+  cursor: crosshair;
+}
+body.cursor-usp {
+  cursor: url("/cursors/usp.png") 2 2, crosshair;
+}
+body.cursor-ak47 {
+  cursor: url("/cursors/ak47.png") 2 2, crosshair;
+}
+body.cursor-awp {
+  cursor: url("/cursors/awp.png") 2 2, crosshair;
+}
+body.cursor-knife *,
+body.cursor-usp *,
+body.cursor-ak47 *,
+body.cursor-awp * {
+  cursor: inherit;
+}
