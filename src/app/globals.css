@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  /* GoldSrc-ish palette */
+  --cs-bg: #0f0f0f;
+  --cs-panel: rgba(0, 0, 0, 0.55);
+  --cs-panel-solid: #0b0b0b;
+  --cs-green: #00ff00;
+  --cs-green-dim: rgba(0, 255, 0, 0.35);
+
+  /* Menu yellows */
+  --cs-menu-dim: #c9a23a;
+  --cs-menu-active: #fff2a8;
+
+  --background: var(--cs-bg);
+  --foreground: var(--cs-green);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-cs-mono);
+  --font-mono: var(--font-cs-mono);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-cs-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+::selection {
+  background: rgba(0, 255, 0, 0.22);
+}
+
+/* CRT scanlines overlay (subtle) */
+.crt-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  opacity: 0.18;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.00) 2px
+  );
+  background-size: 100% 4px;
+  mix-blend-mode: overlay;
+}
+
+/* Console frame pieces */
+.cs-console-frame {
+  border: 1px solid var(--cs-green);
+  background: var(--cs-panel);
+  box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.12), 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.cs-console-topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--cs-green-dim);
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.cs-console-title {
+  font-family: var(--font-cs-pixel), var(--font-cs-mono), monospace;
+  font-size: 11px;
+  color: var(--cs-menu-active);
+  letter-spacing: 0.06em;
+}
+
+.cs-console-hint {
+  font-size: 11px;
+  color: var(--cs-green-dim);
+  white-space: nowrap;
+}
+
+.cs-console-body {
+  height: calc(100% - 41px);
+  overflow: auto;
+  padding: 14px 14px 18px 14px;
+}
+
+/* Small CS-ish buttons */
+.cs-ui-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 2px;
+  border: 1px solid var(--cs-green-dim);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 7px 10px;
+  color: var(--cs-menu-active);
+  font-size: 12px;
+  line-height: 1;
+  user-select: none;
+}
+.cs-ui-button:hover {
+  border-color: var(--cs-green);
+}
+
+/* Cursor switching via body class (ready for url(...) later) */
+body.cs-cursor-knife {
+  cursor: crosshair;
+  /* cursor: url("/cursors/knife.png") 0 0, crosshair; */
+}
+body.cs-cursor-usp {
+  cursor: cell;
+  /* cursor: url("/cursors/usp.png") 0 0, cell; */
+}
+body.cs-cursor-ak47 {
+  cursor: copy;
+  /* cursor: url("/cursors/ak47.png") 0 0, copy; */
+}
+body.cs-cursor-awp {
+  cursor: zoom-in;
+  /* cursor: url("/cursors/awp.png") 0 0, zoom-in; */
+}
