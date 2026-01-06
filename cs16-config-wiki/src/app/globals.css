@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  /* GoldSrc-ish palette */
+  --cs-bg: #0f0f0f;
+  --cs-panel: rgba(0, 0, 0, 0.55);
+  --cs-border: rgba(0, 255, 0, 0.55);
+  --cs-green: #00ff00;
+
+  --cs-menu-idle: #b48a2a; /* dull yellow/orange */
+  --cs-menu-hot: #fff4a3; /* bright yellow/white */
+  --cs-warn: #ffd24a; /* analysis yellow */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(1200px 900px at 35% 15%, #151515 0%, var(--cs-bg) 60%);
+  color: var(--cs-green);
+  font-family: var(--font-mono, ui-monospace), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  overflow-x: hidden;
+}
+
+/* CRT scanlines overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035),
+    rgba(255, 255, 255, 0.035) 1px,
+    rgba(0, 0, 0, 0) 3px,
+    rgba(0, 0, 0, 0) 6px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+}
+
+/* Cursor system (placeholder now; ready for cursor URLs) */
+body.cursor-knife {
+  cursor: crosshair;
+}
+body.cursor-usp {
+  cursor: cell;
+}
+body.cursor-ak47 {
+  cursor: grab;
+}
+body.cursor-awp {
+  cursor: zoom-in;
+}
+
+/* Small utility classes (Tailwind-like, but global) */
+.cs-pixel {
+  font-family: var(--font-pixel, var(--font-mono)), ui-monospace, monospace;
+  letter-spacing: 0.02em;
+}
