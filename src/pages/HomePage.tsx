@@ -1,0 +1,91 @@
+import { motion } from 'framer-motion';
+import { Home, Terminal, Zap, Shield, Target } from 'lucide-react';
+import { PageTitle } from '../components/PageTitle';
+import { ConsoleSection } from '../components/ConsoleSection';
+import { CodeBlock } from '../components/CodeBlock';
+
+const welcomeConfig = `// CS 1.6 Starter Config
+// Place in: cstrike/userconfig.cfg
+
+echo "Loading starter config..."
+exec userconfig.cfg`;
+
+const features = [
+  { icon: Zap, title: 'Optimized Netcode', desc: 'Low latency network settings' },
+  { icon: Target, title: 'Precision Mouse', desc: 'Perfect raw input configuration' },
+  { icon: Shield, title: 'Stable Framerate', desc: 'Rock-solid video settings' },
+];
+
+export function HomePage() {
+  return (
+    <div>
+      <PageTitle
+        title="New Config"
+        subtitle="Welcome to the ultimate CS 1.6 configuration resource"
+        icon={Home}
+      />
+
+      {/* Welcome Banner */}
+      <motion.div
+        className="bg-cs-dark border border-cs-green/50 p-6 mb-8"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <div className="flex items-start gap-4">
+          <Terminal className="text-cs-green mt-1" size={24} />
+          <div>
+            <h2 className="text-cs-green font-bold text-lg mb-2">
+              Console Initialized
+            </h2>
+            <p className="text-cs-green/80 text-sm leading-relaxed">
+              This wiki contains professional-grade configuration settings used by competitive 
+              players. Each setting has been tested and optimized for the GoldSrc engine.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Quick Start */}
+      <ConsoleSection title="Quick Start">
+        <p className="mb-4 text-sm">
+          Create a new file called <span className="text-cs-yellow">userconfig.cfg</span> in 
+          your <span className="text-cs-yellow">cstrike</span> folder and add your settings.
+        </p>
+        <CodeBlock code={welcomeConfig} title="userconfig.cfg" />
+      </ConsoleSection>
+
+      {/* Features Grid */}
+      <ConsoleSection title="What You'll Find Here">
+        <div className="grid md:grid-cols-3 gap-4 mt-4">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              className="bg-cs-dark border border-cs-green/30 p-4 hover:border-cs-green/60 transition-colors"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.1 }}
+            >
+              <feature.icon className="text-cs-green mb-3" size={20} />
+              <h3 className="text-cs-yellow font-bold text-sm mb-1">{feature.title}</h3>
+              <p className="text-cs-gray text-xs">{feature.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </ConsoleSection>
+
+      {/* Technical Note */}
+      <ConsoleSection title="Technical Notes" variant="technical">
+        <p className="text-sm">
+          All configurations are designed for the WON/Steam version of Counter-Strike 1.6 
+          running on the GoldSrc (Half-Life) engine. Settings may differ slightly depending 
+          on your server's tickrate and your internet connection quality.
+        </p>
+        <div className="mt-4 flex items-center gap-2 text-xs">
+          <span className="text-cs-green">●</span>
+          <span>Compatible with Build 4554 and later</span>
+        </div>
+      </ConsoleSection>
+    </div>
+  );
+}
