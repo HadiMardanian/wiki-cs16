@@ -12,21 +12,21 @@ export function ConsoleSection({ title, children, variant = 'default' }: Console
 
   return (
     <motion.section
-      className="mb-8"
+      className="mb-6 md:mb-8"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       {/* Section Header */}
       <div className={`
-        flex items-center gap-2 mb-4 pb-2 border-b
+        flex items-center gap-2 mb-3 md:mb-4 pb-2 border-b
         ${isTechnical ? 'border-cs-yellow/30' : 'border-cs-green/30'}
       `}>
-        <span className={`text-xs ${isTechnical ? 'text-cs-yellow' : 'text-cs-green'}`}>
-          //
+        <span className={`text-[10px] md:text-xs ${isTechnical ? 'text-cs-yellow' : 'text-cs-green'}`}>
+          {'//'}
         </span>
         <h2 className={`
-          text-lg font-bold uppercase tracking-wider
+          text-base md:text-lg font-bold uppercase tracking-wider
           ${isTechnical ? 'text-cs-yellow' : 'text-cs-green'}
         `}>
           {title}
@@ -35,6 +35,7 @@ export function ConsoleSection({ title, children, variant = 'default' }: Console
 
       {/* Content */}
       <div className={`
+        text-sm md:text-base
         ${isTechnical ? 'text-cs-yellow-dim' : 'text-cs-green/90'}
         leading-relaxed
       `}>

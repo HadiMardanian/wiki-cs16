@@ -13,10 +13,14 @@ export function CodeBlock({ code, title }: CodeBlockProps) {
   const { playSelect } = useMenuSound();
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
-    playSelect();
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(code);
+      playSelect();
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
   };
 
   const lines = code.trim().split('\n');
@@ -30,24 +34,25 @@ export function CodeBlock({ code, title }: CodeBlockProps) {
     >
       {/* Header */}
       {title && (
-        <div className="flex items-center justify-between px-4 py-2 bg-cs-dark border-b border-cs-green/30">
-          <span className="text-cs-yellow-dim text-xs uppercase tracking-wider">
+        <div className="flex items-center justify-between px-3 md:px-4 py-2 bg-cs-dark border-b border-cs-green/30">
+          <span className="text-cs-yellow-dim text-[10px] md:text-xs uppercase tracking-wider truncate mr-2">
             {title}
           </span>
           <motion.button
-            className="cs-button text-xs py-1 px-2 flex items-center gap-1"
+            className="cs-button text-[10px] md:text-xs py-1 px-2 flex items-center gap-1 shrink-0"
             onClick={handleCopy}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             {copied ? (
               <>
-                <Check size={12} />
-                <span>Copied!</span>
+                <Check size={10} className="md:w-3 md:h-3" />
+                <span className="hidden sm:inline">Copied!</span>
+                <span className="sm:hidden">✓</span>
               </>
             ) : (
               <>
-                <Copy size={12} />
+                <Copy size={10} className="md:w-3 md:h-3" />
                 <span>Copy</span>
               </>
             )}
@@ -56,11 +61,11 @@ export function CodeBlock({ code, title }: CodeBlockProps) {
       )}
 
       {/* Code Content */}
-      <div className="p-4 font-mono text-sm overflow-x-auto">
+      <div className="p-3 md:p-4 font-mono text-xs md:text-sm overflow-x-auto">
         {lines.map((line, index) => (
           <div key={index} className="flex">
-            <span className="text-cs-yellow select-none mr-2 w-4">]</span>
-            <span className="text-cs-green whitespace-pre">{line}</span>
+            <span className="text-cs-yellow select-none mr-2 w-3 md:w-4 shrink-0">{']'}</span>
+            <span className="text-cs-green whitespace-pre break-all sm:break-normal">{line}</span>
           </div>
         ))}
       </div>
@@ -68,19 +73,20 @@ export function CodeBlock({ code, title }: CodeBlockProps) {
       {/* Copy button (no title variant) */}
       {!title && (
         <motion.button
-          className="absolute top-2 right-2 cs-button text-xs py-1 px-2 flex items-center gap-1"
+          className="absolute top-2 right-2 cs-button text-[10px] md:text-xs py-1 px-2 flex items-center gap-1"
           onClick={handleCopy}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           {copied ? (
             <>
-              <Check size={12} />
-              <span>Copied!</span>
+              <Check size={10} className="md:w-3 md:h-3" />
+              <span className="hidden sm:inline">Copied!</span>
+              <span className="sm:hidden">✓</span>
             </>
           ) : (
             <>
-              <Copy size={12} />
+              <Copy size={10} className="md:w-3 md:h-3" />
               <span>Copy</span>
             </>
           )}
