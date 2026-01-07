@@ -16,7 +16,7 @@ import { TroubleshootingPage } from './pages/TroubleshootingPage';
 function App() {
   return (
     <CursorProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/wiki-cs16">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
