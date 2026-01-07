@@ -4,3 +4,8 @@ export { MousePage } from './MousePage';
 export { VideoPage } from './VideoPage';
 export { AudioPage } from './AudioPage';
 export { BindsPage } from './BindsPage';
+export { CommandsPage } from './CommandsPage';
+export { ScriptsPage } from './ScriptsPage';
+export { ProConfigsPage } from './ProConfigsPage';
+export { LaunchOptionsPage } from './LaunchOptionsPage';
+export { TroubleshootingPage } from './TroubleshootingPage';
