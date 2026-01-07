@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Home, Terminal, Zap, Shield, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Home, Terminal, Zap, Shield, Target, Wifi, Mouse, Monitor, Volume2, Keyboard, Code2, Trophy, Rocket, Wrench } from 'lucide-react';
 import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
@@ -14,6 +15,19 @@ const features = [
   { icon: Zap, title: 'Optimized Netcode', desc: 'Low latency network settings' },
   { icon: Target, title: 'Precision Mouse', desc: 'Perfect raw input configuration' },
   { icon: Shield, title: 'Stable Framerate', desc: 'Rock-solid video settings' },
+];
+
+const quickLinks = [
+  { path: '/netcode', icon: Wifi, title: 'Network', desc: 'Rate & interp' },
+  { path: '/mouse', icon: Mouse, title: 'Mouse', desc: 'Raw input & sens' },
+  { path: '/video', icon: Monitor, title: 'Video', desc: 'FPS & graphics' },
+  { path: '/audio', icon: Volume2, title: 'Audio', desc: 'Sound settings' },
+  { path: '/binds', icon: Keyboard, title: 'Binds', desc: 'Key bindings' },
+  { path: '/commands', icon: Terminal, title: 'Commands', desc: 'Console cmds' },
+  { path: '/scripts', icon: Code2, title: 'Scripts', desc: 'Buy & aliases' },
+  { path: '/pro-configs', icon: Trophy, title: 'Pro Configs', desc: 'Pro settings' },
+  { path: '/launch-options', icon: Rocket, title: 'Launch', desc: 'Steam options' },
+  { path: '/troubleshooting', icon: Wrench, title: 'Help', desc: 'Fix issues' },
 ];
 
 export function HomePage() {
@@ -69,6 +83,35 @@ export function HomePage() {
               <feature.icon className="text-cs-green mb-3" size={20} />
               <h3 className="text-cs-yellow font-bold text-sm mb-1">{feature.title}</h3>
               <p className="text-cs-gray text-xs">{feature.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </ConsoleSection>
+
+      {/* Quick Navigation */}
+      <ConsoleSection title="Quick Navigation">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-4">
+          {quickLinks.map((link, index) => (
+            <motion.div
+              key={link.path}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 + index * 0.03 }}
+            >
+              <Link
+                to={link.path}
+                className="block bg-cs-dark border border-cs-green/30 p-3 hover:border-cs-yellow/60 
+                           hover:bg-cs-darker transition-all group text-center"
+              >
+                <link.icon 
+                  className="mx-auto text-cs-green group-hover:text-cs-yellow mb-2 transition-colors" 
+                  size={20} 
+                />
+                <h3 className="text-cs-yellow font-bold text-xs mb-0.5 group-hover:text-white transition-colors">
+                  {link.title}
+                </h3>
+                <p className="text-cs-gray text-xs">{link.desc}</p>
+              </Link>
             </motion.div>
           ))}
         </div>

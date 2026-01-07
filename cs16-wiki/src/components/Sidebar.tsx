@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, Wifi, Mouse, Monitor, Volume2, Keyboard } from 'lucide-react';
+import { Home, Wifi, Mouse, Monitor, Volume2, Keyboard, Terminal, Code2, Trophy, Rocket, Wrench } from 'lucide-react';
 import { useMenuSound } from '../hooks/useMenuSound';
 
 const menuItems = [
@@ -10,6 +10,11 @@ const menuItems = [
   { path: '/video', label: 'Video', icon: Monitor },
   { path: '/audio', label: 'Audio', icon: Volume2 },
   { path: '/binds', label: 'Binds', icon: Keyboard },
+  { path: '/commands', label: 'Commands', icon: Terminal },
+  { path: '/scripts', label: 'Scripts', icon: Code2 },
+  { path: '/pro-configs', label: 'Pro Configs', icon: Trophy },
+  { path: '/launch-options', label: 'Launch Options', icon: Rocket },
+  { path: '/troubleshooting', label: 'Troubleshooting', icon: Wrench },
 ];
 
 const sidebarVariants = {
