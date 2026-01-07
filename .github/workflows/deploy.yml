@@ -26,18 +26,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: cs16-wiki/package-lock.json
 
       - name: Install dependencies
-        working-directory: cs16-wiki
         run: npm ci
 
       - name: Build
-        working-directory: cs16-wiki
         run: npm run build
 
       - name: Copy 404.html for SPA routing
-        working-directory: cs16-wiki
         run: cp dist/index.html dist/404.html
 
       - name: Setup Pages
@@ -46,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: cs16-wiki/dist
+          path: dist
 
   deploy:
     environment:
