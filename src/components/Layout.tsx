@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { CRTOverlay } from './CRTOverlay';
@@ -17,15 +17,18 @@ export function Layout() {
       <CRTOverlay />
 
       {/* Mobile Overlay */}
-      {isSidebarOpen && (
-        <motion.div
-          className="fixed inset-0 bg-black/80 z-40 lg:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={closeSidebar}
-        />
-      )}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 z-40 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={closeSidebar}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar Navigation */}
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
