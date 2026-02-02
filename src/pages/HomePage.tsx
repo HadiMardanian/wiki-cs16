@@ -4,6 +4,7 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { ConfigBuilder } from '../components/ConfigBuilder';
+import { CustomConfigVault } from '../components/CustomConfigVault';
 import { welcomeConfig } from '../data/configBlocks';
 
 const features = [
@@ -52,6 +53,8 @@ export function HomePage() {
       </ConsoleSection>
 
       <ConfigBuilder />
+
+      <CustomConfigVault />
 
       {/* Features Grid */}
       <ConsoleSection title="What You'll Find Here">
