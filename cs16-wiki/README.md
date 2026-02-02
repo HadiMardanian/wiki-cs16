@@ -11,6 +11,11 @@ A retro-styled documentation website for Counter-Strike 1.6 configuration settin
 - 📝 **Copy-to-Clipboard** - One-click config copying with visual feedback
 - 🔫 **The Armory** - Cursor customization in Buy Menu style
 - ⚡ **Technical Analysis** - In-depth explanations for each setting
+- 🎯 **Console Commands** - Searchable database of all useful commands
+- 📜 **Scripts & Aliases** - Buy scripts, movement scripts, and custom aliases
+- 🏆 **Pro Player Configs** - Settings from legendary CS 1.6 pros (f0rest, Neo, etc.)
+- 🚀 **Launch Options** - Complete guide to Steam launch parameters
+- 🔧 **Troubleshooting** - Common issues with step-by-step solutions
 
 ## Tech Stack
 
@@ -61,12 +66,17 @@ src/
 ├── hooks/
 │   └── useMenuSound.ts  # Menu sound effects (simulated)
 ├── pages/               # Content pages
-│   ├── HomePage.tsx
-│   ├── NetcodePage.tsx
-│   ├── MousePage.tsx
-│   ├── VideoPage.tsx
-│   ├── AudioPage.tsx
-│   └── BindsPage.tsx
+│   ├── HomePage.tsx         # Welcome & Quick Navigation
+│   ├── NetcodePage.tsx      # Network settings
+│   ├── MousePage.tsx        # Mouse configuration
+│   ├── VideoPage.tsx        # Video & FPS settings
+│   ├── AudioPage.tsx        # Audio configuration
+│   ├── BindsPage.tsx        # Key bindings
+│   ├── CommandsPage.tsx     # Console commands reference
+│   ├── ScriptsPage.tsx      # Buy scripts & aliases
+│   ├── ProConfigsPage.tsx   # Professional player settings
+│   ├── LaunchOptionsPage.tsx # Steam launch options
+│   └── TroubleshootingPage.tsx # Common issues & fixes
 ├── App.tsx              # Root component with routing
 ├── main.tsx             # Entry point
 └── index.css            # Global styles + Tailwind
