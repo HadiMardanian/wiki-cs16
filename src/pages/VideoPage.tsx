@@ -3,34 +3,7 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { motion } from 'framer-motion';
-
-const videoConfig = `// Video Settings - Maximum Performance
-fps_max "999"
-fps_override "1"
-gl_vsync "0"
-
-// Renderer Settings
-gl_max_size "512"
-gl_picmip "2"
-gl_playermip "0"
-
-// Visual Clarity
-r_detailtextures "0"
-r_bmodelhighfrac "1.0"
-cl_himodels "0"
-cl_minmodels "1"
-
-// Lighting
-gamma "3"
-brightness "3"`;
-
-const resolutionConfig = `// Resolution Commands
-// Use in-game menu or launch options:
-// -w 1024 -h 768 -freq 144
-
-// Aspect Ratio Settings
-_cl_autowepswitch "0"
-hud_centerid "1"`;
+import { videoConfig, resolutionConfig } from '../data/configBlocks';
 
 export function VideoPage() {
   return (

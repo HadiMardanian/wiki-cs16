@@ -3,50 +3,12 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { motion } from 'framer-motion';
-
-const movementBinds = `// Movement Binds
-bind "w" "+forward"
-bind "s" "+back"
-bind "a" "+moveleft"
-bind "d" "+moveright"
-bind "SPACE" "+jump"
-bind "CTRL" "+duck"
-bind "SHIFT" "+speed"`;
-
-const weaponBinds = `// Weapon Quick-Switch
-bind "1" "slot1"           // Primary
-bind "2" "slot2"           // Secondary  
-bind "3" "slot3"           // Knife
-bind "4" "slot4"           // Grenades
-bind "5" "slot5"           // C4/Defuser
-
-// Quick-Switch (AWP trick)
-bind "q" "lastinv"
-
-// Direct Grenade Binds
-bind "f" "use weapon_flashbang"
-bind "g" "use weapon_hegrenade"
-bind "c" "use weapon_smokegrenade"`;
-
-const utilityBinds = `// Buy Binds (Numpad)
-bind "KP_INS" "buy m4a1; buy ak47"    // 0 - Rifle
-bind "KP_END" "buy deagle"             // 1 - Deagle
-bind "KP_DOWNARROW" "buy awp"          // 2 - AWP
-bind "KP_PGDN" "buy vesthelm"          // 3 - Kevlar+Helm
-bind "KP_LEFTARROW" "buy flashbang"    // 4 - Flash
-bind "KP_5" "buy hegrenade"            // 5 - HE
-bind "KP_RIGHTARROW" "buy smokegrenade"// 6 - Smoke
-bind "KP_HOME" "buy defuser"           // 7 - Defuser
-
-// Communication
-bind "z" "radio1"
-bind "x" "radio2"  
-bind "v" "+voicerecord"`;
-
-const proBind = `// Pro Jump-Throw Bind (for consistent nade throws)
-alias "+jumpthrow" "+jump; -attack"
-alias "-jumpthrow" "-jump"
-bind "n" "+jumpthrow"`;
+import {
+  movementBinds,
+  weaponBinds,
+  utilityBinds,
+  proBind,
+} from '../data/configBlocks';
 
 export function BindsPage() {
   return (

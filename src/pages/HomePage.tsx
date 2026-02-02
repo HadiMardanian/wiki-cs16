@@ -3,12 +3,8 @@ import { Home, Terminal, Zap, Shield, Target } from 'lucide-react';
 import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
-
-const welcomeConfig = `// CS 1.6 Starter Config
-// Place in: cstrike/userconfig.cfg
-
-echo "Loading starter config..."
-exec userconfig.cfg`;
+import { ConfigBuilder } from '../components/ConfigBuilder';
+import { welcomeConfig } from '../data/configBlocks';
 
 const features = [
   { icon: Zap, title: 'Optimized Netcode', desc: 'Low latency network settings' },
@@ -54,6 +50,8 @@ export function HomePage() {
         </p>
         <CodeBlock code={welcomeConfig} title="userconfig.cfg" />
       </ConsoleSection>
+
+      <ConfigBuilder />
 
       {/* Features Grid */}
       <ConsoleSection title="What You'll Find Here">

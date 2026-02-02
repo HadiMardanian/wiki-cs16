@@ -3,28 +3,7 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { motion } from 'framer-motion';
-
-const mouseConfig = `// Mouse Settings - Raw Input
-m_rawinput "1"
-m_filter "0"
-m_customaccel "0"
-m_mouseaccel1 "0"
-m_mouseaccel2 "0"
-
-// Sensitivity (adjust to preference)
-sensitivity "2.0"
-zoom_sensitivity_ratio "1.0"
-
-// Mouse Buttons
-bind "MOUSE1" "+attack"
-bind "MOUSE2" "+attack2"
-bind "MOUSE3" "+speed"`;
-
-const crosshairConfig = `// Crosshair Settings
-cl_crosshair_color "50 250 50"
-cl_crosshair_size "small"
-cl_crosshair_translucent "0"
-cl_dynamiccrosshair "0"`;
+import { mouseConfig, crosshairConfig } from '../data/configBlocks';
 
 export function MousePage() {
   return (

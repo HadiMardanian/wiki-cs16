@@ -3,28 +3,7 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { motion } from 'framer-motion';
-
-const audioConfig = `// Audio Settings - Competitive
-volume "0.5"
-snd_mixahead "0.1"
-hisound "1"
-s_eax "0"
-s_a3d "0"
-
-// Voice Settings
-voice_enable "1"
-voice_scale "0.75"
-voice_loopback "0"
-
-// Music (disable for focus)
-mp3_volume "0"`;
-
-const footstepConfig = `// Enhanced Audio Clarity
-_snd_mixahead "0.1"
-snd_noextraupdate "1"
-
-// Launch option for surround:
-// -snd_headphone_pan_exponent 2`;
+import { audioConfig, footstepConfig } from '../data/configBlocks';
 
 export function AudioPage() {
   return (
