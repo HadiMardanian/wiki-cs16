@@ -3,29 +3,7 @@ import { PageTitle } from '../components/PageTitle';
 import { ConsoleSection } from '../components/ConsoleSection';
 import { CodeBlock } from '../components/CodeBlock';
 import { motion } from 'framer-motion';
-
-const netcodeConfig = `// Network Settings - Optimized for LAN/High-Speed
-rate "128000"
-cl_cmdrate "128"
-cl_updaterate "128"
-cl_interp "0"
-cl_interp_ratio "1"
-
-// Packet Settings
-cl_lagcompensation "1"
-cl_predict "1"
-cl_predictweapons "1"
-cl_smooth "0"
-
-// Download Settings
-cl_allowdownload "1"
-cl_allowupload "1"`;
-
-const lowLatencyConfig = `// Low Latency Optimizations
-cl_showfps "1"
-net_graph "3"
-net_graphpos "2"
-developer "0"`;
+import { netcodeConfig, lowLatencyConfig } from '../data/configBlocks';
 
 export function NetcodePage() {
   return (
