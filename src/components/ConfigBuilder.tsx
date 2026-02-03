@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Copy, Download, Link as LinkIcon } from 'lucide-react';
+import { Check, Copy, Download, Link as LinkIcon, Share2 } from 'lucide-react';
 import { ConsoleSection } from './ConsoleSection';
 import { CodeBlock } from './CodeBlock';
 import { useMenuSound } from '../hooks/useMenuSound';
@@ -7,6 +7,12 @@ import {
   configGroups,
   type ConfigBlock,
 } from '../data/configBlocks';
+import {
+  encodeConfig,
+  generateConfigFileName,
+  sanitizeFileName,
+  buildDownloadUrl,
+} from '../utils/configEncoder';
 
 const allBlocks = configGroups.flatMap((group) => group.blocks);
 const allBlockIds = new Set(allBlocks.map((block) => block.id));
@@ -35,51 +41,8 @@ const buildDownloadContent = (blocks: ConfigBlock[]) => {
   return `${header}${body ? `\n${body}` : ''}\n`;
 };
 
-const generateFileName = () => {
-  const uuid =
-    typeof crypto !== 'undefined' && 'randomUUID' in crypto
-      ? crypto.randomUUID()
-      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-  return `cs16-${uuid}.cfg`;
-};
-
-const sanitizeFileName = (value?: string | null) => {
-  if (!value) {
-    return null;
-  }
-
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return null;
-  }
-
-  const cleaned = trimmed
-    .replace(/\.cfg$/i, '')
-    .replace(/[^a-zA-Z0-9-_]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  if (!cleaned) {
-    return null;
-  }
-
-  return `${cleaned.slice(0, 48)}.cfg`;
-};
-
 const toDataUrl = (content: string) =>
   `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
-
-const createShareUrl = (ids: string[], name: string) => {
-  if (typeof window === 'undefined') {
-    return '';
-  }
-
-  const url = new URL(window.location.href);
-  url.searchParams.set('preset', ids.join(','));
-  url.searchParams.set('name', name);
-  url.searchParams.set('download', '1');
-  return url.toString();
-};
 
 export function ConfigBuilder() {
   const { playSelect } = useMenuSound();
@@ -112,13 +75,22 @@ export function ConfigBuilder() {
         return;
       }
 
-      const chosenName = sanitizeFileName(overrideName) ?? generateFileName();
+      const chosenName = sanitizeFileName(overrideName) ?? generateConfigFileName();
       const content = buildDownloadContent(selectedBlocks);
       const dataUrl = toDataUrl(content);
 
+      // Create encoded config for shareable URL
+      const encodedData = encodeConfig({
+        name: chosenName,
+        content,
+        ids: selectedBlocks.map((block) => block.id),
+        timestamp: Date.now(),
+      });
+      const permanentUrl = buildDownloadUrl(encodedData);
+
       setFileName(chosenName);
       setDownloadUrl(dataUrl);
-      setShareUrl(createShareUrl(selectedBlocks.map((block) => block.id), chosenName));
+      setShareUrl(permanentUrl);
 
       if (auto) {
         const anchor = document.createElement('a');
@@ -380,37 +352,49 @@ export function ConfigBuilder() {
                   </div>
 
                   {shareUrl && (
-                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px] md:text-xs">
-                      <span className="text-cs-gray">GitHub download link:</span>
-                      <input
-                        className="flex-1 min-w-[200px] bg-cs-black border border-cs-green/30 text-cs-green px-2 py-1 text-[10px] md:text-xs"
-                        value={shareUrl}
-                        readOnly
-                      />
-                      <button
-                        type="button"
-                        className="cs-button text-[10px] md:text-xs px-2 py-1"
-                        onClick={handleCopyShare}
-                      >
-                        {copiedShare ? (
-                          <>
-                            <Check size={12} />
-                            Copied
-                          </>
-                        ) : (
-                          <>
-                            <LinkIcon size={12} />
-                            Copy Link
-                          </>
-                        )}
-                      </button>
+                    <div className="mt-4 p-3 bg-cs-black/50 border border-cs-yellow/30 rounded">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Share2 size={14} className="text-cs-yellow" />
+                        <span className="text-cs-yellow font-bold text-[10px] md:text-xs">Permanent Download Link</span>
+                      </div>
+                      <p className="text-[10px] md:text-xs text-cs-gray mb-2">
+                        Share this link with teammates - it contains your complete config:
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <input
+                          className="flex-1 min-w-[200px] bg-cs-black border border-cs-green/30 text-cs-green px-2 py-1 text-[10px] md:text-xs font-mono"
+                          value={shareUrl}
+                          readOnly
+                        />
+                        <button
+                          type="button"
+                          className="cs-button text-[10px] md:text-xs px-3 py-1 flex items-center gap-1"
+                          onClick={handleCopyShare}
+                        >
+                          {copiedShare ? (
+                            <>
+                              <Check size={12} />
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <LinkIcon size={12} />
+                              Copy Link
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      <p className="text-[9px] md:text-[10px] text-cs-gray/70 mt-2">
+                        This link is hosted on GitHub Pages and will auto-download the config when visited.
+                      </p>
                     </div>
                   )}
 
-                  <div className="mt-3 text-[10px] md:text-xs text-cs-gray space-y-1">
+                  <div className="mt-4 text-[10px] md:text-xs text-cs-gray space-y-1 border-t border-cs-green/20 pt-3">
+                    <p className="font-bold text-cs-green mb-2">How to use:</p>
                     <p>1) Download the file and place it in your <span className="text-cs-yellow">cstrike</span> folder.</p>
-                    <p>2) Open the game console and run <span className="text-cs-green">exec {fileName}</span>.</p>
-                    <p>If auto-download is blocked, use the Download button above.</p>
+                    <p>2) Open the game console (~) and run <span className="text-cs-green">exec {fileName}</span>.</p>
+                    <p>3) Share the link above with your teammates - they can download the same config!</p>
                   </div>
                 </>
               )}

@@ -4,3 +4,4 @@ export { MousePage } from './MousePage';
 export { VideoPage } from './VideoPage';
 export { AudioPage } from './AudioPage';
 export { BindsPage } from './BindsPage';
+export { DownloadPage } from './DownloadPage';

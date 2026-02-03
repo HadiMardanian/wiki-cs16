@@ -7,6 +7,7 @@ import { MousePage } from './pages/MousePage';
 import { VideoPage } from './pages/VideoPage';
 import { AudioPage } from './pages/AudioPage';
 import { BindsPage } from './pages/BindsPage';
+import { DownloadPage } from './pages/DownloadPage';
 
 export function App() {
   return (
@@ -20,6 +21,7 @@ export function App() {
             <Route path="video" element={<VideoPage />} />
             <Route path="audio" element={<AudioPage />} />
             <Route path="binds" element={<BindsPage />} />
+            <Route path="download/:data" element={<DownloadPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
