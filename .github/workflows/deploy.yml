@@ -36,6 +36,15 @@ jobs:
       - name: Copy 404.html for SPA routing
         run: cp dist/index.html dist/404.html
 
+      - name: Create build zip
+        run: zip -r dist.zip dist
+
+      - name: Upload build zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist-zip
+          path: dist.zip
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
