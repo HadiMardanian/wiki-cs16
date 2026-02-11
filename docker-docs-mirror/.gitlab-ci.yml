@@ -1,0 +1,152 @@
+# GitLab CI/CD Configuration for Docker Documentation Mirror
+# This pipeline mirrors the Docker documentation and deploys it to GitLab Pages
+
+stages:
+  - mirror
+  - deploy
+
+variables:
+  # Docker documentation URL to mirror
+  DOCKER_DOCS_URL: "https://docs.docker.com"
+  # Directory where mirrored content will be stored
+  MIRROR_DIR: "public"
+  # Maximum depth for wget recursion (adjust based on needs)
+  MAX_DEPTH: "10"
+  # Rate limit to be respectful to Docker servers (wait between requests in seconds)
+  WAIT_TIME: "0.5"
+  # Number of retries for failed downloads
+  RETRIES: "3"
+
+# Cache the mirrored content between pipeline runs to speed up incremental updates
+cache:
+  key: docker-docs-cache-v1
+  paths:
+    - $MIRROR_DIR/
+
+# Mirror the Docker documentation
+mirror_docs:
+  stage: mirror
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache wget ca-certificates
+  script:
+    - echo "Starting Docker documentation mirror..."
+    - mkdir -p $MIRROR_DIR
+    - |
+      wget \
+        --mirror \
+        --convert-links \
+        --adjust-extension \
+        --page-requisites \
+        --no-parent \
+        --no-host-directories \
+        --directory-prefix=$MIRROR_DIR \
+        --wait=$WAIT_TIME \
+        --random-wait \
+        --tries=$RETRIES \
+        --retry-connrefused \
+        --timeout=30 \
+        --limit-rate=500k \
+        --execute robots=off \
+        --reject "*.exe,*.dmg,*.pkg,*.deb,*.rpm,*.msi,*.tar.gz,*.zip" \
+        --user-agent="Mozilla/5.0 (compatible; DocMirrorBot/1.0; +https://gitlab.com)" \
+        $DOCKER_DOCS_URL/ || true
+    - echo "Mirror completed. Checking content..."
+    - ls -la $MIRROR_DIR/
+    - du -sh $MIRROR_DIR/
+  artifacts:
+    paths:
+      - $MIRROR_DIR/
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - .gitlab-ci.yml
+        - mirror.sh
+
+# Deploy to GitLab Pages
+pages:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - mirror_docs
+  script:
+    - echo "Preparing GitLab Pages deployment..."
+    # Ensure public directory exists and has content
+    - |
+      if [ ! -d "public" ] || [ -z "$(ls -A public 2>/dev/null)" ]; then
+        echo "Error: public directory is empty or missing!"
+        exit 1
+      fi
+    # Create a simple index.html if the root doesn't have one
+    - |
+      if [ ! -f "public/index.html" ]; then
+        echo "Creating redirect to docs..."
+        cat > public/index.html << 'EOF'
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Docker Documentation Mirror</title>
+        <meta http-equiv="refresh" content="0; url=./docs/">
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
+          a { color: #0db7ed; }
+        </style>
+      </head>
+      <body>
+        <div>
+          <h1>Docker Documentation Mirror</h1>
+          <p>Redirecting to <a href="./docs/">documentation</a>...</p>
+        </div>
+      </body>
+      </html>
+      EOF
+      fi
+    - echo "GitLab Pages content ready!"
+    - ls -la public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+# Optional: Scheduled mirror update job
+# Configure this in GitLab CI/CD > Schedules to run weekly/monthly
+scheduled_mirror:
+  stage: mirror
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache wget ca-certificates
+  script:
+    - echo "Running scheduled mirror update..."
+    - mkdir -p $MIRROR_DIR
+    - |
+      wget \
+        --mirror \
+        --convert-links \
+        --adjust-extension \
+        --page-requisites \
+        --no-parent \
+        --no-host-directories \
+        --directory-prefix=$MIRROR_DIR \
+        --timestamping \
+        --wait=$WAIT_TIME \
+        --random-wait \
+        --tries=$RETRIES \
+        --retry-connrefused \
+        --timeout=30 \
+        --limit-rate=500k \
+        --execute robots=off \
+        --reject "*.exe,*.dmg,*.pkg,*.deb,*.rpm,*.msi,*.tar.gz,*.zip" \
+        --user-agent="Mozilla/5.0 (compatible; DocMirrorBot/1.0; +https://gitlab.com)" \
+        $DOCKER_DOCS_URL/ || true
+    - echo "Scheduled mirror update completed."
+  artifacts:
+    paths:
+      - $MIRROR_DIR/
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'

@@ -1,0 +1,60 @@
+# Docker Compose for Docker Documentation Mirror
+# 
+# Usage:
+#   1. First run the mirror script: ./mirror.sh
+#   2. Then start the server: docker-compose up -d
+#   3. Access at: http://localhost:8080
+#
+# For development/testing:
+#   docker-compose up --build
+
+version: '3.8'
+
+services:
+  # Main web server for serving the mirrored documentation
+  docs:
+    image: nginx:alpine
+    container_name: docker-docs-mirror
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    labels:
+      - "com.docker-docs-mirror.description=Docker Documentation Mirror"
+
+  # Alternative: Build and serve using the Dockerfile
+  # Uncomment this service if you want to build everything in Docker
+  # docs-built:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: docker-docs-mirror-built
+  #   ports:
+  #     - "8081:80"
+  #   restart: unless-stopped
+
+  # Optional: Mirror service (run once to download docs)
+  # Usage: docker-compose run --rm mirror
+  mirror:
+    image: alpine:latest
+    container_name: docker-docs-mirror-wget
+    volumes:
+      - ./public:/output
+      - ./mirror.sh:/mirror.sh:ro
+    working_dir: /
+    command: |
+      sh -c "
+        apk add --no-cache wget ca-certificates bash &&
+        chmod +x /mirror.sh &&
+        /mirror.sh -o /output
+      "
+    profiles:
+      - tools
